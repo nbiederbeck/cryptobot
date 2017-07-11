@@ -1,7 +1,10 @@
 # cryptobot
 A telegram bot written in python which gives you different information about some cryptocurrencies.
+This bot is named [Crypt0Currency\_Bot](t.me/Crypt0Currency_Bot).
+It currently doesn't run.
 
 ## _TODO_
+- [ ] ___RUN ON RASPBERRY PI___
 - [x] send prices on message
 - [x] have an  answer for every message
 - [ ] send message every n minutes
