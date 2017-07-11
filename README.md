@@ -11,5 +11,5 @@ A telegram bot written in python which gives you different information about som
 - [ ] add functionality for group chats
 
 ## Supported Cryptocurrencies
-- [Bitcoin](https://bitcoin.org/) from [website](http://www.finanzen.net/devisen/bitcoin-euro-kurs)
-- [Ethereum](https://www.ethereum.org/) from [website](http://www.finanzen.net/devisen/ethereum-euro-kurs)
+- [Bitcoin](https://bitcoin.org/) from [finanzen.net](http://www.finanzen.net/devisen/bitcoin-euro-kurs)
+- [Ethereum](https://www.ethereum.org/) from [finanzen.net](http://www.finanzen.net/devisen/ethereum-euro-kurs)
