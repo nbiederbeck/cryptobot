@@ -1,17 +1,22 @@
 # cryptobot
 A telegram bot written in python which gives you different information about some cryptocurrencies.
 This bot is named [Crypt0Currency\_Bot](t.me/Crypt0Currency_Bot).
-It currently doesn't run on a Raspberry Pi.
+It currently runs on a Raspberry Pi.
 
 ## _TODO_
-- [ ] ___RUN ON RASPBERRY PI___
+- [x] run on raspberry pi
 - [x] send prices on message
 - [x] have an  answer for every message
 - [ ] send message every n minutes
 - [ ] send relative changes
-- [ ] plot and save some more information
+- [ ] plot and save some information
 - [ ] send plots
 - [ ] add functionality for group chats
+
+### not sure if _TODO_
+- [ ] maybe use these websites instead:
+  - [BTC-ECHO Bitcoin](https://www.btc-echo.de/bitcoin-kurs/)
+  - [BTC-ECHO Ethereum](https://www.btc-echo.de/ether-kurs/)
 
 ## Supported Cryptocurrencies
 - [Bitcoin](https://bitcoin.org/) from [finanzen.net](http://www.finanzen.net/devisen/bitcoin-euro-kurs)
