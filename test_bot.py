@@ -1,10 +1,11 @@
 import re
 import requests
 import telepot
-from time import sleep
+from time import sleep, localtime
 from bs4 import BeautifulSoup
 from yaml import load
 from IPython import embed
+from functools import lru_cache
 
 with open('config.yaml') as f:
     config = load(f)
@@ -31,7 +32,9 @@ for command in commands:
         guide += command + '.'
 
 
-def get_price(currency):
+
+@lru_cache(maxsize=2)
+def get_price(currency, time=localtime()[:5]):
     '''Returns up-to-date price of currency.'''
 
     url = 'http://www.finanzen.net/devisen/{currency}-euro-kurs'.format(
@@ -48,6 +51,8 @@ def get_price(currency):
 
     answer = '{curr} price is {price} EUR'.format(curr=currency, price=price)
     return answer
+
+
 
 
 def fallback(chat_id):
