@@ -9,7 +9,7 @@ with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
     f.write(str(getpid())+'\n')
 # from IPython import embed
 
-with open('config.yaml') as f:
+with open('/home/pi/Git/cryptobot/config.yaml') as f:
     config = load(f)
 
 token = config['token']
