@@ -81,6 +81,12 @@ def handle(msg):
 
     if command in currencies:
         bot.sendMessage(chat_id=chat_id, text=get_price(command))
+    elif command == 'convert':
+        bot.sendMessage(
+            chat_id=chat_id,
+            text='A `/convert` function will be added soon!',
+            parse_mode='Markdown',
+        )
     else:
         fallback(chat_id)
         return
