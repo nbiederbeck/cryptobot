@@ -90,10 +90,8 @@ def handle(msg):
 # Keep the bot listening and running
 print('listening ...')
 bot.message_loop(handle)
-# sleep(24 * 60 * 60 - 1)
 
 while True:
     sleep(10)
-    # for currency in currencies:
-    #     bot.sendMessage(chat_id=chat_id, text=price(currency))
-    # sleep(600)
+    # to send price information every `n` minutes check documentation of `telepot`
+    # because there is a preimplemented function
