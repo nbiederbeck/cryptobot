@@ -23,6 +23,7 @@ commands = [  # implemented telegram commands
     '/start',
     '/bitcoin',
     '/ethereum',
+    '/convert',
     ]
 
 # fallback answer if messages are not understood
@@ -72,7 +73,7 @@ def handle(msg):
         fallback(chat_id)
         return
 
-    if message.startswith('/'):
+    if message in commands:
         command = message[1:]
     else:
         fallback(chat_id)
