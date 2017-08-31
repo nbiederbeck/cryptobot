@@ -12,6 +12,8 @@ It currently runs on a Raspberry Pi.
 - [ ] plot and save some information
 - [ ] send plots
 - [ ] add functionality for group chats
+- [ ] convert currencies
+  - `/convert 1 btc eur` -> `1 btc is 3500 eur`
 
 ### not sure if _TODO_
 - [ ] maybe use these websites instead:
