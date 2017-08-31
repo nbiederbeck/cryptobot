@@ -25,7 +25,7 @@ commands = [  # implemented telegram commands
     '/ethereum',
     ]
 
-# fallback answer if messges are not understood
+# fallback answer if messages are not understood
 guide = 'Use either '
 for command in commands:
     if command != commands[-1]:
