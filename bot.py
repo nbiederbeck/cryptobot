@@ -82,13 +82,17 @@ def handle(msg):
     if command in currencies:
         bot.sendMessage(chat_id=chat_id, text=get_price(command))
     elif command == 'convert':
-        amount = message.split()[1]
-        bot.sendMessage(
-            chat_id=chat_id,
-            text='A `/convert` function will be added soon!',
-            parse_mode='Markdown',
-        )
-        bot.sendMessage(chat_id=chat_id, text=get_price(command, amount=amount))
+        try:
+            amount = message.split()[1]
+            currency = message.split()[2]
+            bot.sendMessage(
+                chat_id=chat_id,
+                text='A `/convert` function will be added soon!',
+                parse_mode='Markdown',
+            )
+            bot.sendMessage(chat_id=chat_id, text=get_price(currency, amount=amount))
+        except Exception as e:
+            bot.sendMessage(chat_id=chat_id, text=e)
     else:
         fallback(chat_id)
         return
