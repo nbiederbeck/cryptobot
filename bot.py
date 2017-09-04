@@ -35,7 +35,7 @@ for command in commands:
         guide += command + '.'
 
 
-def get_price(currency):
+def get_price(currency, amount=1):
     '''Returns up-to-date price of currency.'''
 
     url = 'http://www.finanzen.net/devisen/{currency}-euro-kurs'.format(
@@ -47,9 +47,9 @@ def get_price(currency):
         "div", {"class": "col-xs-5 col-sm-4 text-sm-right text-nowrap"})
 
     x = r'[0-9]*\.*[0-9]{1,3}\,[0-9]{1,4}'
-    price = re.findall(pattern=x, string=str(div))[0]
+    price = int(re.findall(pattern=x, string=str(div))[0])
 
-    answer = '{curr} price is {price} EUR'.format(curr=currency, price=price)
+    answer = '{curr} price is {price} EUR'.format(curr=currency, price=amount*price)
     return answer
 
 
@@ -73,8 +73,8 @@ def handle(msg):
         fallback(chat_id)
         return
 
-    if message in commands:
-        command = message[1:]
+    if message.split()[0] in commands:
+        command = message.split()[0][1:]
     else:
         fallback(chat_id)
         return
@@ -82,11 +82,13 @@ def handle(msg):
     if command in currencies:
         bot.sendMessage(chat_id=chat_id, text=get_price(command))
     elif command == 'convert':
+        amount = message.split()[1]
         bot.sendMessage(
             chat_id=chat_id,
             text='A `/convert` function will be added soon!',
             parse_mode='Markdown',
         )
+        bot.sendMessage(chat_id=chat_id, text=get_price(command, amount=amount))
     else:
         fallback(chat_id)
         return
