@@ -1,17 +1,19 @@
 import re
 import requests
 import telepot
-from time import sleep, localtime
+from time import sleep
 from bs4 import BeautifulSoup
 from yaml import load
-from IPython import embed
-from functools import lru_cache
+from os import getpid
+with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
+    f.write(str(getpid())+'\n')
+# from IPython import embed
 
-with open('config.yaml') as f:
+with open('/home/pi/Git/cryptobot/config.yaml') as f:
     config = load(f)
 
-# token = config['token']
-# bot = telepot.Bot(token)
+token = config['token']
+bot = telepot.Bot(token)
 
 currencies = [  # supported cryptocurrencies
     'bitcoin',
@@ -21,9 +23,10 @@ commands = [  # implemented telegram commands
     '/start',
     '/bitcoin',
     '/ethereum',
+    '/convert',
     ]
 
-# fallback answer if messges are not understood
+# fallback answer if messages are not understood
 guide = 'Use either '
 for command in commands:
     if command != commands[-1]:
@@ -32,9 +35,7 @@ for command in commands:
         guide += command + '.'
 
 
-
-@lru_cache(maxsize=2)
-def get_price(currency, time=localtime()[:5]):
+def get_price(currency):
     '''Returns up-to-date price of currency.'''
 
     url = 'http://www.finanzen.net/devisen/{currency}-euro-kurs'.format(
@@ -47,12 +48,9 @@ def get_price(currency, time=localtime()[:5]):
 
     x = r'[0-9]*\.*[0-9]{1,3}\,[0-9]{1,4}'
     price = re.findall(pattern=x, string=str(div))[0]
-    price = float(price.replace('.', '').replace( ',','.'))
 
     answer = '{curr} price is {price} EUR'.format(curr=currency, price=price)
     return answer
-
-
 
 
 def fallback(chat_id):
@@ -64,13 +62,18 @@ def handle(msg):
 
     content_type, chat_type, chat_id = telepot.glance(msg)
 
+    if chat_id == 322086570:
+        admin = True
+    else:
+        admin = False
+
     if content_type == 'text':
         message = msg['text']
     else:
         fallback(chat_id)
         return
 
-    if message.startswith('/'):
+    if message in commands:
         command = message[1:]
     else:
         fallback(chat_id)
@@ -78,6 +81,12 @@ def handle(msg):
 
     if command in currencies:
         bot.sendMessage(chat_id=chat_id, text=get_price(command))
+    elif command == 'convert':
+        bot.sendMessage(
+            chat_id=chat_id,
+            text='A `/convert` function will be added soon!',
+            parse_mode='Markdown',
+        )
     else:
         fallback(chat_id)
         return
@@ -86,14 +95,10 @@ def handle(msg):
 
 
 # Keep the bot listening and running
-# print('listening ...')
-# bot.message_loop(handle)
+print('listening ...')
+bot.message_loop(handle)
 
-# while True:
-#     sleep(10)
-    # for currency in currencies:
-    #     bot.sendMessage(chat_id=chat_id, text=price(currency))
-    # sleep(600)
-
-if __name__ == '__main__':
-    embed()
+while True:
+    sleep(10)
+    # to send price information every `n` minutes check documentation of `telepot`
+    # because there is a preimplemented function
