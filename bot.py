@@ -5,12 +5,16 @@ from time import sleep
 from bs4 import BeautifulSoup
 from yaml import load
 from os import getpid
+import locale
+from IPython import embed
+
+locale.setlocale(locale.LC_ALL, 'german')
+
 with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
     f.write(str(getpid())+'\n')
-# from IPython import embed
 
-with open('/home/pi/Git/cryptobot/config.yaml') as f:
-    config = load(f)
+
+
 
 token = config['token']
 bot = telepot.Bot(token)
@@ -22,8 +26,9 @@ currencies = [  # supported cryptocurrencies
 commands = [  # implemented telegram commands
     '/start',
     '/bitcoin',
+    '/bitcoin value',
     '/ethereum',
-    '/convert',
+    '/ethereum value',
     ]
 
 # fallback answer if messages are not understood
@@ -49,9 +54,19 @@ def get_price(currency):
     x = r'[0-9]*\.*[0-9]{1,3}\,[0-9]{1,4}'
     price = re.findall(pattern=x, string=str(div))[0]
 
-    answer = '{curr} price is {price} EUR'.format(curr=currency, price=price)
-    return answer
+    #answer = '{curr} price is {price} EUR'.format(curr=currency, price=price)
+    #return answer
 
+    return locale.atof(price)
+
+def get_value(currency, amount):
+    price = get_price(currency)
+    return amount*price
+
+def answer(currency, amount=1):
+    value = get_value(currency, amount)
+    text_answer = '{curr} price is for {amount} {curr} is {value} EUR'.format(curr=currency, amount=amount, value=value)
+    return text_answer
 
 def fallback(chat_id):
     '''Send fallback message if something is not quite right.'''
@@ -68,34 +83,30 @@ def handle(msg):
         admin = False
 
     if content_type == 'text':
-        message = msg['text']
+        command = msg['text']
     else:
         fallback(chat_id)
         return
-
-    if message in commands:
-        command = message[1:]
+    command = command[1:]
+    command = command.split()
+    if command[0] in currencies:
+        if len(command) == 2:
+            bot.sendMessage(chat_id=chat_id, text=answer(command[0],float(command[1])))
+        elif len(command) ==1:
+            bot.sendMessage(chat_id=chat_id, text=answer(command[0]))
+        else:
+            bot.sendMessage(chat_id=chat_id, text='You have typed too many arguments.')
+            fallback(chat_id)
+            return
     else:
         fallback(chat_id)
         return
-
-    if command in currencies:
-        bot.sendMessage(chat_id=chat_id, text=get_price(command))
-    elif command == 'convert':
-        bot.sendMessage(
-            chat_id=chat_id,
-            text='A `/convert` function will be added soon!',
-            parse_mode='Markdown',
-        )
-    else:
-        fallback(chat_id)
-        return
-
     return
 
 
 # Keep the bot listening and running
 print('listening ...')
+#embed()
 bot.message_loop(handle)
 
 while True:
