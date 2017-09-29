@@ -52,7 +52,10 @@ def get_price(currency):
 
     url = 'http://www.finanzen.net/devisen/{currency}-euro-kurs'.format(
         currency=currency)
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except Exception as e:
+        return 0  # there HAS TO BE a better way, but for now this needs to work
 
     soup = BeautifulSoup(response.text, 'html.parser')
     div = soup.find(
@@ -112,12 +115,13 @@ def handle(msg):
     return
 
 
-# Keep the bot listening and running
-print('listening ...')
-#embed()
-bot.message_loop(handle)
+if __name__ == '__main__':
+    # Keep the bot listening and running
+    print('listening ...')
+    #embed()
+    bot.message_loop(handle)
 
-while True:
-    sleep(10)
-    # to send price information every `n` minutes check documentation of `telepot`
-    # because there is a preimplemented function
+    while True:
+        sleep(10)
+        # to send price information every `n` minutes check documentation of `telepot`
+        # because there is a preimplemented function
