@@ -1,6 +1,6 @@
 # cryptobot
 A telegram bot written in python which gives you different information about some cryptocurrencies.
-This bot is named [Crypt0Currency\_Bot][telegram].
+This bot is named [Crypt0Currency\_Bot][bot].
 It currently runs on a Raspberry Pi.
 
 ## _TODO_
@@ -21,7 +21,7 @@ It currently runs on a Raspberry Pi.
   - [BTC-ECHO Ethereum][2]
 
 ## Supported Cryptocurrencies
-- [Bitcoin][6] from [finanzen.net][4]
+- [Bitcoin][3] from [finanzen.net][4]
 - [Ethereum][5] from [finanzen.net][6]
 
 ## Collaborators
