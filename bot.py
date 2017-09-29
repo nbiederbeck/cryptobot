@@ -8,7 +8,9 @@ from os import getpid
 import locale
 from IPython import embed
 
-locale.setlocale(locale.LC_ALL, 'german')
+locale.setlocale(
+        category=locale.LC_ALL,
+        locale='de_DE.UTF-8')
 
 with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
     f.write(str(getpid())+'\n')
