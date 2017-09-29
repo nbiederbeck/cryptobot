@@ -13,8 +13,12 @@ locale.setlocale(
     locale='de_DE.UTF-8',
     )
 
-with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
-    f.write(str(getpid())+'\n')
+try:
+    with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
+        f.write(str(getpid())+'\n')
+except FileNotFoundError as e:
+    print(e)
+    print('Should not be a concern, because testing is not done on Raspberry Pi.')
 
 with open('config.yaml') as f:
     config = load(f)
@@ -29,18 +33,18 @@ currencies = [  # supported cryptocurrencies
 commands = [  # implemented telegram commands
     '/start',
     '/bitcoin',
-    '/bitcoin value',
+    '/bitcoin <value>',
     '/ethereum',
-    '/ethereum value',
+    '/ethereum <value>',
     ]
 
 # fallback answer if messages are not understood
-guide = 'Use either '
+guide = 'Usage:\n'
 for command in commands:
     if command != commands[-1]:
-        guide += command + ' or '
+        guide += "- {}\n".format(command)
     else:
-        guide += command + '.'
+        guide += '- {}'.format(command)
 
 
 def get_price(currency):
@@ -94,6 +98,7 @@ def handle(msg):
     command = command.split()
     if command[0] in currencies:
         if len(command) == 2:
+            command[1] = command[1].replace(',', '.')
             bot.sendMessage(chat_id=chat_id, text=answer(command[0],float(command[1])))
         elif len(command) ==1:
             bot.sendMessage(chat_id=chat_id, text=answer(command[0]))
