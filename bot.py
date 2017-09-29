@@ -9,14 +9,15 @@ import locale
 from IPython import embed
 
 locale.setlocale(
-        category=locale.LC_ALL,
-        locale='de_DE.UTF-8')
+    category=locale.LC_ALL,
+    locale='de_DE.UTF-8',
+    )
 
 with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
     f.write(str(getpid())+'\n')
 
-
-
+with open('config.yaml') as f:
+    config = load(f)
 
 token = config['token']
 bot = telepot.Bot(token)
@@ -67,7 +68,7 @@ def get_value(currency, amount):
 
 def answer(currency, amount=1):
     value = get_value(currency, amount)
-    text_answer = '{curr} price is for {amount} {curr} is {value} EUR'.format(curr=currency, amount=amount, value=value)
+    text_answer = 'Price for {amount} {curr} is {value} EUR'.format(curr=currency, amount=amount, value=value)
     return text_answer
 
 def fallback(chat_id):
