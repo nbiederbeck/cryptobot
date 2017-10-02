@@ -115,13 +115,11 @@ def handle(msg):
     return
 
 
-if __name__ == '__main__':
-    # Keep the bot listening and running
-    print('listening ...')
-    #embed()
-    bot.message_loop(handle)
+# Keep the bot listening and running
+print('listening ...')
+bot.message_loop(handle)
 
-    while True:
-        sleep(10)
-        # to send price information every `n` minutes check documentation of `telepot`
-        # because there is a preimplemented function
+while True:
+    sleep(10)
+    # to send price information every `n` minutes check documentation of `telepot`
+    # because there is a preimplemented function
