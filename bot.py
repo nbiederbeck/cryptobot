@@ -3,7 +3,7 @@ import requests
 import telepot
 from time import sleep
 from bs4 import BeautifulSoup
-from yaml import load
+import yaml
 from os import getpid
 import locale
 from IPython import embed
@@ -24,13 +24,13 @@ except FileNotFoundError as e:
 
 try:
     with open('/home/pi/Git/cryptobot/config.yaml') as f:
-        config = load(f)
+        config = yaml.load(f)
 except FileNotFoundError as e:
     # print(e)
     print('Config file in cryptobot directory not found, trying current directory.')
     try:
         with open('config.yaml') as f:
-            config = load(f)
+            config = yaml.load(f)
     except FileNotFoundError as e:
         # print(e)
         sys.exit('No config file found. Aborting ...')
@@ -48,6 +48,8 @@ commands = [  # implemented telegram commands
     '/bitcoin <value>',
     '/ethereum',
     '/ethereum <value>',
+    '/mycoins',
+    '/mycoins add <btc-amount> <eth-amount>',
     ]
 
 # fallback answer if messages are not understood
@@ -90,6 +92,46 @@ def answer(currency, amount=1):
     text_answer = 'Price for {amount} {curr} is {value} EUR'.format(curr=currency, amount=amount, value=value)
     return text_answer
 
+
+class Wallet():
+    """A coin wallet. Stored are only the amounts per chat_id."""
+    def __init__(self, wallet_location):
+        self = self
+        with open(wallet_location) as f:
+            self.wallet = yaml.load(f)
+    def get_value(self, chat_id):
+        # wallet = yaml.load('wallet.yaml')
+        try:
+            current_wallet = self.wallet[chat_id]
+        except:
+            return 0
+        value = get_value('bitcoin', current_wallet['bitcoin'])
+        value += get_value('ethereum', current_wallet['ethereum'])
+        return value
+    def set_value(self, chat_id, do, btc_amount, eth_amount):
+        # wallet = yaml.load('wallet.yaml')
+        try:
+            current_wallet = self.wallet[chat_id]
+        except:
+            current_wallet = dict()
+        if do == 'set':
+            current_wallet['bitcoin'] = btc_amount
+            current_wallet['ethereum'] = eth_amount
+            self.wallet[chat_id] = current_wallet
+            with open('wallet.yaml', 'w') as f:
+                yaml.dump(self.wallet, stream=f)
+        else:
+            current_wallet['bitcoin'] += btc_amount
+            current_wallet['ethereum'] += eth_amount
+            self.wallet[chat_id] = current_wallet
+            with open('wallet.yaml', 'w') as f:
+                yaml.dump(self.wallet, stream=f)
+        return True
+
+wallet = Wallet(wallet_location='wallet.yaml')
+
+
+
 def fallback(chat_id):
     '''Send fallback message if something is not quite right.'''
     bot.sendMessage(chat_id=chat_id, text=guide)
@@ -121,6 +163,17 @@ def handle(msg):
             bot.sendMessage(chat_id=chat_id, text='You have typed too many arguments.')
             fallback(chat_id)
             return
+    elif command[0] == 'mycoins':
+        if len(command) == 1:
+            euros = wallet.get_value(chat_id)
+            bot.sendMessage(chat_id=chat_id, text='Your coins are worth {euros} EUR.'.format(euros=euros))
+        else:
+            do = command[1]  # should be one of add/set
+            btc_amount = command[2]
+            eth_amount = command[3]
+            update = wallet.set_value(chat_id, do, float(btc_amount), float(eth_amount))
+            if update:
+                bot.sendMessage(chat_id=chat_id, text='Your coins are up to date!')
     else:
         fallback(chat_id)
         return
