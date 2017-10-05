@@ -7,6 +7,7 @@ from yaml import load
 from os import getpid
 import locale
 from IPython import embed
+import sys
 
 locale.setlocale(
     category=locale.LC_ALL,
@@ -17,11 +18,22 @@ try:
     with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
         f.write(str(getpid())+'\n')
 except FileNotFoundError as e:
-    print(e)
-    print('Should not be a concern, because testing is not done on Raspberry Pi.')
+    # print(e)
+    print('File `process_ids.txt` not found. '
+            'Should not be a concern, because testing is not done on Raspberry Pi.')
 
-with open('config.yaml') as f:
-    config = load(f)
+try:
+    with open('/home/pi/Git/cryptobot/config.yaml') as f:
+        config = load(f)
+except FileNotFoundError as e:
+    # print(e)
+    print('Config file in cryptobot directory not found, trying current directory.')
+    try:
+        with open('config.yaml') as f:
+            config = load(f)
+    except FileNotFoundError as e:
+        # print(e)
+        sys.exit('No config file found. Aborting ...')
 
 token = config['token']
 bot = telepot.Bot(token)
