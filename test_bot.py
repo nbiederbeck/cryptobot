@@ -4,10 +4,6 @@ import telepot
 from time import sleep
 from bs4 import BeautifulSoup
 from yaml import load
-from os import getpid
-with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
-    f.write(str(getpid())+'\n')
-# from IPython import embed
 
 with open('/home/pi/Git/cryptobot/config.yaml') as f:
     config = load(f)

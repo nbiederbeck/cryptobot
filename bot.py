@@ -4,7 +4,6 @@ import telepot
 from time import sleep
 from bs4 import BeautifulSoup
 from yaml import load
-from os import getpid
 import locale
 from IPython import embed
 import sys
@@ -13,14 +12,6 @@ locale.setlocale(
     category=locale.LC_ALL,
     locale='de_DE.UTF-8',
     )
-
-try:
-    with open('/home/pi/Git/RaspberryPiBot/temp/process_ids.txt', 'a') as f:
-        f.write(str(getpid())+'\n')
-except FileNotFoundError as e:
-    # print(e)
-    print('File `process_ids.txt` not found. '
-            'Should not be a concern, because testing is not done on Raspberry Pi.')
 
 try:
     with open('/home/pi/Git/cryptobot/config.yaml') as f:
