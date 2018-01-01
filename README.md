@@ -23,6 +23,7 @@ It currently runs on a Raspberry Pi.
 ## Supported Cryptocurrencies
 - [Bitcoin][3] from [finanzen.net][4]
 - [Ethereum][5] from [finanzen.net][6]
+- [IOTA][7] from [finanzen.net][8]
 
 ## Collaborators
 - [drgh0st][drgh0st]
@@ -36,4 +37,7 @@ It currently runs on a Raspberry Pi.
 [5]: https://www.ethereum.org/ 'ethereum'
 [4]: http://www.finanzen.net/devisen/bitcoin-euro-kurs 'bitcoin-euro-kurs'
 [6]: http://www.finanzen.net/devisen/ethereum-euro-kurs 'ethereum-euro-kurs'
+[7]: http://iota.org/
+[8]: http://www.finanzen.net/devisen/iota-euro-kurs 'iota-euro-kurs'
+
 
