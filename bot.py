@@ -32,6 +32,7 @@ bot = telepot.Bot(token)
 currencies = [  # supported cryptocurrencies
     'bitcoin',
     'ethereum',
+    'iota'
     ]
 commands = [  # implemented telegram commands
     '/start',
@@ -39,6 +40,8 @@ commands = [  # implemented telegram commands
     '/bitcoin <value>',
     '/ethereum',
     '/ethereum <value>',
+    '/iota',
+    '/iota <value>'
     ]
 
 # fallback answer if messages are not understood
