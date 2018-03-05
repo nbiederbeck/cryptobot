@@ -1,2 +1,13 @@
+# secret config
 config.yaml
+
+# pip
 __pycache__/
+
+# venv
+bin
+lib
+lib64
+include
+share
+pyvenv.cfg
