@@ -1,8 +1,10 @@
 all:
-	@echo "Do 'make install' and then 'make run'."
+	@echo "Do 'make venv' once, 'make install' at least once and then 'make run'."
+
+venv:
+	python -m venv .
 
 install:
-	python -m venv .
 	. bin/activate && pip install -U -r requirements.txt
 
 run:
