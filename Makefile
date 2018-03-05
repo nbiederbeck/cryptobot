@@ -3,11 +3,7 @@ all:
 
 install:
 	python -m venv .
-	source bin/activate
-	pip install -U -r requirements.txt
-	deactivate
+	. bin/activate && pip install -U -r requirements.txt
 
 run:
-	source bin/activate
-	python bot.py
-	deactivate
+	. bin/activate && python bot.py
