@@ -9,3 +9,6 @@ install:
 
 run:
 	. bin/activate && python bot.py
+
+git:
+	git pull
